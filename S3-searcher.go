@@ -18,6 +18,9 @@ func main() {
     bucketName := "your-s3-bucket-name"
     searchSubstring := "your-substring"
 
+    // Convert search substring to lower case for case-insensitive search
+    searchSubstring = strings.ToLower(searchSubstring)
+
     // Load AWS configuration
     cfg, err := config.LoadDefaultConfig(context.TODO())
     if err != nil {
@@ -60,7 +63,8 @@ func main() {
                     continue
                 }
 
-                if strings.Contains(string(fileContent), searchSubstring) {
+                // Perform case-insensitive search
+                if strings.Contains(strings.ToLower(string(fileContent)), searchSubstring) {
                     fileLocation := "s3://" + bucketName + "/" + key
                     foundFiles = append(foundFiles, fileLocation)
                 }
